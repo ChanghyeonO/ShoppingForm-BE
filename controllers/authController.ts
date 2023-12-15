@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import UserService from "../services/UserService";
+import UserService from "../services/authService";
 
-const UserController = {
+const authController = {
   async register(req: Request, res: Response) {
     try {
       const { email, password, name, phoneNumber } = req.body;
@@ -45,4 +45,4 @@ const UserController = {
   },
 };
 
-export default UserController;
+export default authController;

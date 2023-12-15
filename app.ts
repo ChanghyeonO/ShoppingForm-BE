@@ -1,17 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import passport from "passport";
+import authRouter from "./routers/authRouter";
+
 const app = express();
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 const mongodb = process.env.MONGODB_URI;
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("여기는 쇼핑폼의 백엔드 페이지입니다");
 });
+
+app.use("/api", authRouter);
 
 mongoose
   .connect(mongodb!)

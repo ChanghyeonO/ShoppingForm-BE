@@ -5,7 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   name: string;
-  shoppingmallNum: number;
+  shoppingmalls: Object;
   phoneNumber: string;
   refreshToken: string;
   isTempPassword: boolean;
@@ -33,11 +33,11 @@ const UserSchema = new Schema<IUser>({
     required: true,
     default: "",
   },
-  shoppingmallNum: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  shoppingmalls: [
+    {
+      type: Object,
+    },
+  ],
   refreshToken: {
     type: String,
     default: "",

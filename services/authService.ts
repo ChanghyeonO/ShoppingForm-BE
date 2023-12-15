@@ -1,4 +1,4 @@
-import User from "../models/schemas/User";
+import User from "../models/schemas/user";
 import { setUserToken } from "../utils/jwt";
 import { hashPassword } from "../utils/hashPassword";
 import bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ const UserService = {
     email: string,
     password: string,
     name: string,
-    phoneNumber: number,
+    phoneNumber: string,
   ) {
     // 이메일 중복 검사
     const existingUser = await User.findOne({ email });
