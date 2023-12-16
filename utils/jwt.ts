@@ -10,30 +10,29 @@ export const setUserToken = async (
 ): Promise<{ accessToken: string; refreshToken?: string }> => {
   const accessPayload = {
     _id: user._id,
-    id: user.id,
     name: user.name,
     email: user.email,
   };
   const accessOptions = { algorithm: "HS256", expiresIn: "1h" };
   const accessToken = sign(
     accessPayload,
-    process.env.JWTACCESS as Secret,
+    process.env.ACCESS_SECRET as Secret,
     accessOptions as SignOptions,
   );
 
   if (!isOnlyAccess) {
     const refreshPayload = {
-      id: user.id,
+      _id: user._id,
     };
-    const refreshOptions = { algorithm: "HS256", expiresIn: "7d" };
+    const refreshOptions = { algorithm: "HS256", expiresIn: "24h" };
     const refreshToken = sign(
       refreshPayload,
-      process.env.JWTREFRESH as Secret,
+      process.env.REFRESH_SECRET as Secret,
       refreshOptions as SignOptions,
     );
 
     await User.updateOne(
-      { id: refreshPayload.id },
+      { _id: refreshPayload._id },
       {
         refreshToken: refreshToken,
       },

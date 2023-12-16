@@ -1,9 +1,9 @@
-import User from "../models/schemas/user";
+import { User } from "../models/index";
 import { setUserToken } from "../utils/jwt";
 import { hashPassword } from "../utils/hashPassword";
 import bcrypt from "bcrypt";
 
-const UserService = {
+const authService = {
   // 회원가입
   async signup(
     email: string,
@@ -36,7 +36,12 @@ const UserService = {
   // 로그인
   async login(email: string, password: string) {
     // 사용자 찾기
+    console.log(`로그인 시도: ${email}`);
+
     const user = await User.findOne({ email });
+
+    console.log(`찾은 사용자: ${user ? user.email : "없음"}`);
+
     if (!user) {
       throw new Error("사용자를 찾을 수 없습니다.");
     }
@@ -47,19 +52,20 @@ const UserService = {
       throw new Error("비밀번호가 일치하지 않습니다.");
     }
 
-    // 토큰 생성
     const tokens = await setUserToken(user, false);
 
     return tokens;
   },
 
-  // 로그아웃
-  async logout(userId: string) {
-    // 사용자의 리프레시 토큰 제거
-    await User.updateOne({ _id: userId }, { refreshToken: "" });
+  //로그아웃
+  async logout(email: string) {
+    await User.updateOne(
+      { email: email },
+      { $set: { accessToken: "", refreshToken: "" } },
+    );
 
     return { message: "로그아웃 성공" };
   },
 };
 
-export default UserService;
+export default authService;

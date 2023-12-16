@@ -1,21 +1,15 @@
 import { Schema, Document, model } from "mongoose";
 
 export interface IUser extends Document {
-  id: string;
   email: string;
   password: string;
   name: string;
-  shoppingmalls: Object;
   phoneNumber: string;
+  shoppingMalls: Object;
   refreshToken: string;
-  isTempPassword: boolean;
 }
 
 const UserSchema = new Schema<IUser>({
-  id: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
@@ -33,7 +27,7 @@ const UserSchema = new Schema<IUser>({
     required: true,
     default: "",
   },
-  shoppingmalls: [
+  shoppingMalls: [
     {
       type: Object,
     },

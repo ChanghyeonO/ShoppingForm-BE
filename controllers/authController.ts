@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import UserService from "../services/authService";
+import authService from "../services/authService";
 
 const authController = {
   async register(req: Request, res: Response) {
     try {
       const { email, password, name, phoneNumber } = req.body;
-      const user = await UserService.signup(email, password, name, phoneNumber);
+      const user = await authService.signup(email, password, name, phoneNumber);
       res.status(201).json({ message: "회원가입 성공", user });
     } catch (error) {
       if (error instanceof Error) {
@@ -19,7 +19,7 @@ const authController = {
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const tokens = await UserService.login(email, password);
+      const tokens = await authService.login(email, password);
       res.status(200).json({ message: "로그인 성공", tokens });
     } catch (error) {
       if (error instanceof Error) {
@@ -32,8 +32,8 @@ const authController = {
 
   async logout(req: Request, res: Response) {
     try {
-      const { userId } = req.body;
-      await UserService.logout(userId);
+      const { email } = req.body;
+      await authService.logout(email);
       res.status(200).json({ message: "로그아웃 성공" });
     } catch (error) {
       if (error instanceof Error) {
